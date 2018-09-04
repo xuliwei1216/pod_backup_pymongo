@@ -1,0 +1,190 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A AWESOME WEB !</title>
+    <link rel="stylesheet" href="{% static 'css/semantic.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/semantic.js' %}"></script>
+  </head>
+  <body>
+    <div class="ui thin visible left sidebar inverted vertical menu">
+      <div class="header item">
+        <img src="{% static "images/logo2.png" %}">
+      </div>
+      {% block href %}
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo">All Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo_elk" style="color:#E066FF"><B>ELK Data</B></a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo_allweb">AllWeb Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo_zabbix">Zabbix Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo_guanwu">GuanWu Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo_pike">PikeWeb Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo_redmine">Redmine Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo_db">db3306 Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/chart_data">Charts</a>
+        <i class="bar chart icon"></i>
+      </div>
+      <div class="item">
+        Others
+        <i class="idea icon"></i>
+      </div>
+      {% endblock %}
+    </div>
+    <div class="pusher">
+      <div class="ui menu">
+        <div class="header item" id="menu">
+          Menu
+          <i class="content icon"></i>
+        </div>
+        <div class="item">data analysis</div>
+        <div class="item">The lab</div>
+        <div class="item">data</div>
+
+      </div>
+      <div class="ui equal width grid" style="width:85%;margin:5px 5px 5px 5px;">
+        {% block content %}
+        <div class="row">
+          <div class="column">
+            <div class="ui red segment">
+              <div class="ui statistic width" style="text-align: center">
+                <div class="value width" style="text-align: center;font-size:45px"><a style="text-align: center"><B>10.10.3.202:</B></a></div>
+                <div class="label">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="ui blue segment">
+              <div class="ui statistic">
+                <div class="value" style="font-size:45px">
+                  <a style="text-align: center"><B>需备份数:</B></a>{{ count01 }}
+                </div>
+                <div class="label">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="ui yellow segment">
+              <div class="ui statistic">
+                <div class="value" style="font-size:45px">
+                    <a style="text-align: center"><B>已完成:</B></a>{{ count02 }}
+                </div>
+                <div class="label">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endblock %}
+        <div class="row">
+          <div class="column">
+            <div class="ui segment">
+              <div class="ui divided items">
+                {% for item in MongodbInfo %}
+                  <div class="item">
+                    <div class="content">
+                      <a class="header">{{ item.host }}</a>
+                        <div class="meta">
+                          {% for file in item.file_create %}
+                            <span class="ui label">{{ file }}</span>
+                          {% endfor %}
+                            <a><b>(备份文件完成时间)</b></a>
+                        </div>
+                      <div class="discription"><a><b>名称:</b></a>&nbsp;{{ item.name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a><b>备份路径:</b></a>&nbsp;{{ item.path }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a><b>文件大小:</b></a>&nbsp;{{ item.size }}<a><b>MB</b></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a><b>环境:</b></a>&nbsp;{{ item.env }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a><b>类型:</b></a>&nbsp;{{ item.type }}</div>
+                        <!--<<div class="size">文件大小:{{ item.size }}MB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;环境:{{ item.env }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类型:{{ item.type }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名称:{{ item.name }}</div>
+                        div class="env">{{ item.env }}</div>
+                        <div class="type">{{ item.type }}</div>
+                        <div class="name">{{ item.name }}</div>-->
+                      <div class="status" style="background-color:#40E0D0"><a style="color:#FF00FF"><b>备份状态:</b></a>&nbsp;&nbsp;<a style="color:#FF0000">{{ item.status }}</a></div>
+                      <div class="data_now"><a><b>更新时间:</b></a>&nbsp;&nbsp;{{ item.data_now }}</div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="ui small pagination menu">
+                {% if MongodbInfo.has_previous %}
+                  <a class="icon item" href="?page={{ MongodbInfo.previous_page_number }}">
+                    <i class="left arrow icon"></i>
+                  </a>
+                {% endif %}
+                <div class="disabled item"> {{ MongodbInfo.number }} of {{ MongodbInfo.paginator.num_pages }} </div>
+                {% if MongodbInfo.has_next %}
+                  <a class="icon item" href="?page={{ MongodbInfo.next_page_number }}">
+                    <i class="right arrow icon"></i>
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--<div class="ui container" style="margin:10px 10px 10px 10px;">
+        <div class="ui divided items">
+          {% for item in MongodbInfo %}
+            <div class="item">
+              <div class="content">
+                <a class="header">{{ item.host }}</a>
+                  <div class="meta">
+                    {% for file in item.file_create %}
+                      <span class="ui label">{{ file }}</span>
+                    {% endfor %}
+                    <a>(备份文件完成时间)</a>
+                  </div>
+                <div class="discription"><a>名称:</a>&nbsp;{{ item.name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>备份路径:</a>&nbsp;{{ item.path }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>文件大小:</a>&nbsp;{{ item.size }}MB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>环境:</a>&nbsp;{{ item.env }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>类型:</a>&nbsp;{{ item.type }}</div>
+                  <div class="status"><a>备份状态:</a>&nbsp;&nbsp;{{ item.status }}</div>
+                  <div class="data_now"><a>更新时间:</a>&nbsp;&nbsp;{{ item.data_now }}</div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+          <div class="ui small pagination menu">
+            {% if MongodbInfo.has_previous %}
+              <a class="icon item" href="?page={{ MongodbInfo.previous_page_number }}">
+                <i class="left arrow icon"></i>
+              </a>
+            {% endif %}
+            <div class="disabled item"> {{ MongodbInfo.number }} of {{ MongodbInfo.paginator.num_pages }} </div>
+            {% if MongodbInfo.has_next %}
+              <a class="icon item" href="?page={{ MongodbInfo.next_page_number }}">
+                <i class="right arrow icon"></i>
+              </a>
+            {% endif %}
+          </div>
+        </div>-->
+      </div>
+    <script>
+      $('#menu').click(function () {
+        $('.ui.sidebar').sidebar('toggle');
+      });
+    </script>
+
+  </body>
+</html>

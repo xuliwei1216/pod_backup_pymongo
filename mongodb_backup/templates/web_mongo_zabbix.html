@@ -1,0 +1,80 @@
+{% extends 'web_mongo_elk.html' %}
+
+{% block href %}
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo">All Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo_elk"><B>ELK Data</B></a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo_allweb">AllWeb Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo_zabbix" style="color:#E066FF">Zabbix Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo_guanwu">GuanWu Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo_pike">PikeWeb Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo_redmine">Redmine Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo_db">db3306 Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/chart_data">Charts</a>
+        <i class="bar chart icon"></i>
+      </div>
+      <div class="item">
+        Others
+        <i class="idea icon"></i>
+      </div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+          <div class="column">
+            <div class="ui red segment">
+              <div class="ui statistic width" style="text-align: center">
+                <div class="value width" style="text-align: center;font-size:45px"><a style="text-align: center"><B>10.10.3.202:</B></a></div>
+                <div class="label">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="ui blue segment">
+              <div class="ui statistic">
+                <div class="value" style="font-size:45px">
+                  <a style="text-align: center"><B>需备份数:</B></a>{{ count01 }}
+                </div>
+                <div class="label">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="ui yellow segment">
+              <div class="ui statistic">
+                <div class="value" style="font-size:45px">
+                    <a style="text-align: center"><B>已完成:</B></a>{{ count02 }}
+                </div>
+                <div class="label">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock %}

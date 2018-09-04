@@ -1,0 +1,284 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A AWESOME WEB !</title>
+    <link rel="stylesheet" href="{% static 'css/semantic.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/semantic.js' %}"></script>
+    <script src="{% static 'js/exporting.js' %}"></script>
+    <script src="{% static 'js/highcharts.js' %}"></script>
+    <script src="{% static 'js/highcharts-more.js' %}"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  </head>
+  <body>
+    <div class="ui thin visible left sidebar inverted vertical menu">
+      <div class="header item">
+        <img src="{% static "images/logo2.png" %}">
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo">All Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        <a href="http://127.0.0.1:8000/web_mongo_elk">ELK Data</a>
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        Charts
+        <i class="bar chart icon"></i>
+      </div>
+      <div class="item">
+        Others
+        <i class="idea icon"></i>
+      </div>
+
+    </div>
+    <div class="pusher">
+      <div class="ui menu">
+        <div class="header item" id="menu">
+          Menu
+          <i class="content icon"></i>
+        </div>
+        <div class="item">data analysis</div>
+        <div class="item">The lab</div>
+        <div class="item">data</div>
+
+      </div>
+
+      <div class="ui equal width grid" style="width:80%;margin:5px 5px 5px 5px;">
+        <div class="row">
+          <div class="column">
+            <div class="ui red segment">
+              <div class="ui statistic">
+                <div class="value">
+                  50,000
+                </div>
+                <div class="label">
+                  Document
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="ui blue segment">
+              <div class="ui statistic">
+                <div class="value">
+                  50,000
+                </div>
+                <div class="label">
+                  Documents
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="ui yellow segment">
+              Three
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="column">
+            <div class="ui segment">
+              <div class="ui divided items">
+                {% for item in MongodbInfo %}
+                  <div class="item">
+                    <div class="content">
+                      <a class="header">{{ item.host }}</a>
+                        <div class="meta">
+                          {% for file in item.file_create %}
+                            <span class="ui label">{{ file }}</span>
+                          {% endfor %}
+                          <a>(备份文件完成时间)</a>
+                        </div>
+                      <div class="discription"><a>名称:</a>&nbsp;{{ item.name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>备份路径:</a>&nbsp;{{ item.path }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>文件大小:</a>&nbsp;{{ item.size }}MB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>环境:</a>&nbsp;{{ item.env }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>类型:</a>&nbsp;{{ item.type }}</div>
+                        <!--<<div class="size">文件大小:{{ item.size }}MB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;环境:{{ item.env }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类型:{{ item.type }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名称:{{ item.name }}</div>
+                        div class="env">{{ item.env }}</div>
+                        <div class="type">{{ item.type }}</div>
+                        <div class="name">{{ item.name }}</div>-->
+                        <div class="status"><a>备份状态:</a>&nbsp;&nbsp;{{ item.status }}</div>
+                        <div class="data_now"><a>更新时间:</a>&nbsp;&nbsp;{{ item.data_now }}</div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="ui small pagination menu">
+                {% if MongodbInfo.has_previous %}
+                  <a class="icon item" href="?page={{ MongodbInfo.previous_page_number }}">
+                    <i class="left arrow icon"></i>
+                  </a>
+                {% endif %}
+                <div class="disabled item"> {{ MongodbInfo.number }} of {{ MongodbInfo.paginator.num_pages }} </div>
+                {% if MongodbInfo.has_next %}
+                  <a class="icon item" href="?page={{ MongodbInfo.next_page_number }}">
+                    <i class="right arrow icon"></i>
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ui divider"></div>
+
+      <div class="ui equal width grid" style="width:80%;margin:5px 5px 5px 5px;">
+        <div class="row">
+          <div class="column">
+            <div class="ui container segment">
+              <div class="ui compact menu">
+                <div class="ui simple dropdown item">
+                  Dropdown
+                  <i class="dropdown icon"></i>
+                  <div class="menu">
+                    <div class="item" id="MG1">ALLWEB-160-22</div>
+                    <div class="item" id="MG2">zabbix_prd01-3-201</div>
+                    <div class="item" id="MG3">elk01-3-201</div>
+                  </div>
+                </div>
+              </div>
+              <div class="ui container" id="chart1">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--<div class="ui container" style="margin:10px 10px 10px 10px;">
+        <div class="ui divided items">
+          {% for item in MongodbInfo %}
+            <div class="item">
+              <div class="content">
+                <a class="header">{{ item.host }}</a>
+                  <div class="meta">
+                    {% for file in item.file_create %}
+                      <span class="ui label">{{ file }}</span>
+                    {% endfor %}
+                    <a>(备份文件完成时间)</a>
+                  </div>
+                <div class="discription"><a>名称:</a>&nbsp;{{ item.name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>备份路径:</a>&nbsp;{{ item.path }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>文件大小:</a>&nbsp;{{ item.size }}MB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>环境:</a>&nbsp;{{ item.env }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>类型:</a>&nbsp;{{ item.type }}</div>
+                  <div class="status"><a>备份状态:</a>&nbsp;&nbsp;{{ item.status }}</div>
+                  <div class="data_now"><a>更新时间:</a>&nbsp;&nbsp;{{ item.data_now }}</div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+          <div class="ui small pagination menu">
+            {% if MongodbInfo.has_previous %}
+              <a class="icon item" href="?page={{ MongodbInfo.previous_page_number }}">
+                <i class="left arrow icon"></i>
+              </a>
+            {% endif %}
+            <div class="disabled item"> {{ MongodbInfo.number }} of {{ MongodbInfo.paginator.num_pages }} </div>
+            {% if MongodbInfo.has_next %}
+              <a class="icon item" href="?page={{ MongodbInfo.next_page_number }}">
+                <i class="right arrow icon"></i>
+              </a>
+            {% endif %}
+          </div>
+        </div>-->
+      </div>
+    <script>
+      $('#menu').click(function () {
+        $('.ui.sidebar').sidebar('toggle');
+      });
+    </script>
+
+    <script>
+        $('#MG1').click(function () {
+          $('#chart1').highcharts({
+            chart: {
+                type: 'bar'
+            },
+            credits:{
+                enabled:false
+            },
+            title: {
+                text: 'Fruit Consumption'
+            },
+            xAxis: {
+                categories: ['Apples', 'Bananas', 'Oranges']
+            },
+            yAxis: {
+                title: {
+                    text: 'Fruit eaten'
+                }
+            },
+            series: [{
+                name: 'Jane',
+                data: [5, 7, 3]
+            }, {
+                name: 'John',
+                data: [5, 7, 3]
+            }]
+        });
+    });
+    </script>
+
+    <script>
+        $('#MG2').click(function () {
+          $('#chart1').highcharts({
+            chart: {
+                type: 'bar'
+            },
+            credits:{
+                enabled:false
+            },
+            title: {
+                text: 'Fruit Consumption'
+            },
+            xAxis: {
+                categories: ['Apples', 'Bananas', 'Oranges']
+            },
+            yAxis: {
+                title: {
+                    text: 'Fruit eaten'
+                }
+            },
+            series: [{
+                name: 'Jane',
+                data: [5, 7, 3]
+            }, {
+                name: 'John',
+                data: [5, 7, 3]
+            }]
+        });
+    });
+    </script>
+
+    <script>
+        $('#MG3').click(function () {
+          $('#chart1').highcharts({
+            chart: {
+                type: 'bar'
+            },
+            credits:{
+                enabled:false
+            },
+            title: {
+                text: 'Fruit Consumption'
+            },
+            xAxis: {
+                categories: ['Apples', 'Bananas', 'Oranges']
+            },
+            yAxis: {
+                title: {
+                    text: 'Fruit eaten'
+                }
+            },
+            series: [{
+                name: 'Jane',
+                data: [5, 7, 3]
+            }, {
+                name: 'John',
+                data: [5, 7, 3]
+            }]
+        });
+    });
+    </script>
+  </body>
+</html>
